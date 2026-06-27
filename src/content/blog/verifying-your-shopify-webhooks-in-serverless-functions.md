@@ -1,0 +1,80 @@
+---
+title: "Verifying Your Shopify Webhooks in Next.js APIs"
+description: "A journey through the pitfalls of verifying the origin of your Shopify webhook requests with a base64-encrypted hmac header."
+pubDate: "2022-01-30"
+---
+
+In my [last post](https://johnschmidt.de/blog/keep-shopify-and-your-headless-cms-in-sync) I've illustrated a basic approach to synchronize Shopify product data with your headless CMS using serverless functions. To avoid unwelcome API calls and even malicious attempts to modify your data we can use a HMAC based verification [procedure](https://shopify.dev/tutorials/manage-webhooks#verifying-webhooks) provided by Shopify.
+
+Using a secret key we can digest the request body into a HMAC hash. Comparing this to a HMAC hash provided in the request headers we can determine if the request is valid or not. Just **a few modifications** to our API are needed to verify the origin of received webhooks and ensure the integrity of our sync workflow.
+
+## Prerequisites
+
+In this example I am working with serverless functions provided by **Next.js** built-in API routes on Vercel. Any other framework or platform deploying Node based serverless or lambda functions **should work** just fine as well, though. Additionally, you'll need a Shopify shop instance to get your webhooks from. You usually can create one for free as a developer. I continue to build on the example I've discussed in my last post.
+
+You will also need a **secret key** to digest the request body into a HMAC hash. You can find it in the "Notification" settings of your store dashboard at the very bottom. I'd recommend storing it in an environment variable in your project to keep it safe and sound.
+
+![Location of the Shopify webhook key](../../assets/blog/verifying-your-shopify-webhooks-in-serverless-functions/e2f4d38fcf412a2f3131d07468d3400429602918.png)
+
+## Raw Body Needed
+
+In my first approach of setting this up for a client, I've come across this nasty pitfall: To generate the correct HMAC digest out of the webhook request body and the secret key, we need the requests **raw body**. Next.js gives you the option to [deactivate](https://nextjs.org/docs/api-routes/api-middlewares#custom-config) the default body parser. This requires that we handle the `http.IncomingMessage` Stream ourselves and extract the requests `Buffer` from within. We will use a library called [`raw-body`](https://github.com/stream-utils/raw-body) to do exactly this job for us.
+
+```javascript
+import getRawBody from 'raw-body'
+
+export default async function (req, res) {
+  // We need to await the Stream to receive the complete body Buffer
+  const body = await getRawBody(req)
+  // ...
+}
+
+// We turn off the default bodyParser provided by Next.js
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+```
+
+## Creating the HMAC Digest
+
+Now that we got the raw body `Buffer` stored in a variable, we digest the raw body into a hmac hash using our secret key and compare it with the `X-Shopify-Hmac-SHA256` header string in the end. Since the HMAC header is base64 encoded, we need to encode our digest as well. **If the digest and the header are equal**, the webhook can be deemed valid. 
+
+To create a hmac digest, Node provides us with the `crypto` module and its `crypto.createHmac()` method. We import the module into our API route and feed in the data we prepared in the previous steps. For more information on the crypto module, have a look at the official [documentation](https://nodejs.org/dist/latest-v14.x/docs/api/crypto.html#crypto_crypto).
+
+```javascript
+import getRawBody from 'raw-body'
+import crypto from "crypto"
+
+export default async function (req, res) {
+  // We need to await the Stream to receive the complete body Buffer
+  const body = await getRawBody(req)
+  // Get the header from the request
+  const hmacHeader = req.headers['x-shopify-hmac-sha256']
+  // Digest the data into a hmac hash
+  const digest = crypto
+    .createHmac('sha256', process.env.SHOPIFY_SECRET)
+    .update(body)
+    .digest('base64')
+  // Compare the result with the header
+  if (digest === hmacHeader) {
+    // VALID - continue with your tasks
+    res.status(200).end()
+  } else {
+    // INVALID - Respond with 401 Unauthorized
+    res.status(401).end()
+  }
+}
+
+// We turn off the default bodyParser provided by Next.js
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+```
+
+## Wrapping Up
+
+Keeping the data transfers concerning pricing and inventory safe is certainly a critical feature to headless e-commerce in general. With just a few lines of code you're able to leverage the validation built into Shopify webhook system in your serverless functions.

@@ -1,6 +1,5 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
-import { SITE_TITLE } from "../../consts";
 import { type OgData, renderOgImage } from "../../lib/og";
 
 const formatDate = (date: Date) =>
