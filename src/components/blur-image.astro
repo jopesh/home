@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+import { generateBlurPlaceholder } from "../lib/placeholder";
+
+type Props = ComponentProps<typeof Image>;
+
+const { src, alt, class: className, ...rest } = Astro.props;
+const placeholder = await generateBlurPlaceholder(
+  src as Parameters<typeof generateBlurPlaceholder>[0]
+);
+
+// Re-assemble into a single object so the discriminated union on Image's
+// props isn't lost by spreading `rest` separately.
+const imageProps = { src, alt, class: "w-full", ...rest } as Props;
+---
+
+<div
+  class:list={["overflow-hidden", className]}
+  style={`background-image: url(${placeholder}); background-size: cover; background-position: center;`}
+>
+  <Image {...imageProps} />
+</div>

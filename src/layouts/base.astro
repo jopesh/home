@@ -1,0 +1,96 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../components/base-head.astro";
+import Footer from "../components/footer.astro";
+import Header from "../components/header.astro";
+
+interface Props {
+  class?: string;
+  description: string;
+  ogImage?: string;
+  title: string;
+}
+
+const { title, description, class: className, ogImage } = Astro.props;
+
+const fadeUp = {
+  forwards: {
+    old: [
+      {
+        name: "fade-up-out",
+        duration: "0.15s",
+        easing: "ease-in",
+        fillMode: "both",
+      },
+    ],
+    new: [
+      {
+        name: "fade-up-in",
+        duration: "0.25s",
+        easing: "ease-out",
+        fillMode: "both",
+        delay: "0.05s",
+      },
+    ],
+  },
+  backwards: {
+    old: [
+      {
+        name: "fade-up-in",
+        duration: "0.15s",
+        easing: "ease-in",
+        fillMode: "both",
+        direction: "reverse",
+      },
+    ],
+    new: [
+      {
+        name: "fade-up-out",
+        duration: "0.25s",
+        easing: "ease-out",
+        fillMode: "both",
+        direction: "reverse",
+      },
+    ],
+  },
+};
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <BaseHead title={title} description={description} ogImage={ogImage} />
+    <ClientRouter />
+    <style is:global>
+      @keyframes fade-up-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+      }
+      @keyframes fade-up-out {
+        to {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans text-text bg-paper">
+    <Header />
+    <main
+      transition:animate={fadeUp}
+      class:list={["max-w-2xl mx-auto px-6 pb-12", className]}
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

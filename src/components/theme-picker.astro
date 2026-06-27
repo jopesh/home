@@ -1,0 +1,63 @@
+---
+import Icon from "./icon.astro";
+---
+
+<div class="flex items-center gap-0.5">
+  <button
+    data-theme-value="system"
+    type="button"
+    class="theme-btn p-1.5 rounded text-text-muted hover:text-accent transition-colors duration-200"
+    aria-label="System-Theme"
+  >
+    <Icon name="monitor" class="size-3.5" />
+  </button>
+  <button
+    data-theme-value="light"
+    type="button"
+    class="theme-btn p-1.5 rounded text-text-muted hover:text-accent transition-colors duration-200"
+    aria-label="Helles Theme"
+  >
+    <Icon name="sun" class="size-3.5" />
+  </button>
+  <button
+    data-theme-value="dark"
+    type="button"
+    class="theme-btn p-1.5 rounded text-text-muted hover:text-accent transition-colors duration-200"
+    aria-label="Dunkles Theme"
+  >
+    <Icon name="moon" class="size-3.5" />
+  </button>
+</div>
+
+<script>
+  function initThemePicker() {
+    const buttons = document.querySelectorAll(".theme-btn");
+    const stored = localStorage.getItem("theme") || "system";
+
+    function updateActive(value: string) {
+      for (const btn of buttons) {
+        const isActive = (btn as HTMLElement).dataset.themeValue === value;
+        btn.classList.toggle("text-text", isActive);
+        btn.classList.toggle("text-text-muted", !isActive);
+      }
+    }
+
+    updateActive(stored);
+
+    for (const btn of buttons) {
+      btn.addEventListener("click", () => {
+        const value = (btn as HTMLElement).dataset.themeValue ?? "system";
+        localStorage.setItem("theme", value);
+        updateActive(value);
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        const isDark = value === "dark" || (value === "system" && prefersDark);
+        document.documentElement.classList.toggle("dark", isDark);
+      });
+    }
+  }
+
+  initThemePicker();
+  document.addEventListener("astro:after-swap", initThemePicker);
+</script>

@@ -1,141 +1,303 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/jetbrains-mono";
+@plugin "@tailwindcss/typography";
 
-:root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-}
-body {
-	font-family: var(--font-atkinson);
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
-}
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
-}
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
-}
-pre > code {
-	all: unset;
-}
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
-}
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+    overflow-y: scroll;
 }
 
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
-	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
-	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-	white-space: nowrap;
+@theme {
+    --font-sans: "Geist Variable", sans-serif;
+    --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+    --color-accent: oklch(52% 0.13 107.3);
+    --color-accent-dark: oklch(42% 0.11 107.3);
+    --color-paper: oklch(98.8% 0.003 106.5);
+    --color-paper-dark: oklch(96.6% 0.005 106.5);
+    --color-text: oklch(22.8% 0.013 107.4);
+    --color-text-light: oklch(39.4% 0.023 107.4);
+    --color-text-muted: oklch(73.7% 0.021 106.9);
+    --color-border: oklch(93% 0.007 106.5);
+}
+
+html.dark {
+    --color-accent: oklch(70% 0.11 106.9);
+    --color-accent-dark: oklch(82% 0.09 106.6);
+    --color-paper: oklch(15.3% 0.006 107.1);
+    --color-paper-dark: oklch(22.8% 0.013 107.4);
+    --color-text: oklch(96.6% 0.005 106.5);
+    --color-text-light: oklch(88% 0.011 106.6);
+    --color-text-muted: oklch(58% 0.031 107.3);
+    --color-border: oklch(28.6% 0.016 107.4);
+    color-scheme: dark;
+}
+
+html.dark .astro-code,
+html.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+}
+
+/* ── Blog article prose ──────────────────────────────────── */
+
+.prose-article {
+    /* Headings */
+    --tw-prose-headings: var(--color-text);
+
+    & :where(h2, h3, h4, h5, h6) {
+        font-weight: 300;
+        color: var(--color-text);
+        letter-spacing: -0.01em;
+    }
+
+    & :where(h2) {
+        margin-top: 2.5em;
+        margin-bottom: 1em;
+        font-size: 1.625rem;
+        line-height: 1.3;
+    }
+
+    & :where(h3) {
+        margin-top: 2em;
+        font-size: 1.25rem;
+    }
+
+    /* Body text */
+    & :where(p) {
+        letter-spacing: 0.01em;
+    }
+
+    /* Drop cap on first paragraph — use initial-letter for proper alignment */
+    /*& > p:first-of-type::first-letter {
+        margin-right: 0.5em;
+        font-weight: 400;
+        color: var(--color-text);
+        initial-letter: 2;
+    }*/
+
+    /* Links */
+    & :where(a) {
+        color: var(--color-text);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-color: color-mix(
+            in srgb,
+            var(--color-text-muted) 40%,
+            transparent
+        );
+        text-underline-offset: 2px;
+        transition:
+            color 0.2s,
+            text-decoration-color 0.2s;
+    }
+
+    & :where(a):hover {
+        color: var(--color-accent);
+        text-decoration-color: color-mix(
+            in srgb,
+            var(--color-accent) 40%,
+            transparent
+        );
+    }
+
+    /* Blockquotes */
+    & :where(blockquote) {
+        padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+        margin-block: 2.5rem;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 400;
+        color: var(--color-text);
+        background-color: color-mix(
+            in srgb,
+            var(--color-paper-dark) 60%,
+            transparent
+        );
+        border-top: none;
+        border-right: none;
+        border-bottom: none;
+        border-left: 3px solid var(--color-accent);
+        border-radius: 0 0.375rem 0.375rem 0;
+    }
+
+    /* Strong */
+    & :where(strong) {
+        font-weight: 500;
+        color: var(--color-text);
+    }
+
+    /* Code */
+    & :where(code) {
+        font-weight: 400;
+        color: var(--color-text);
+    }
+
+    & :where(pre) {
+        color: var(--color-text-light);
+        background-color: var(--color-paper-dark);
+        border: 1px solid var(--color-border);
+        border-radius: 0.375rem;
+    }
+
+    /* Figures */
+    & :where(figcaption) {
+        color: var(--color-text-muted);
+        text-align: center;
+    }
+
+    /* Lists */
+    & :where(li)::marker {
+        color: var(--color-text-muted);
+    }
+
+    /* Tables */
+    & :where(th),
+    & :where(td) {
+        border-color: var(--color-border);
+    }
+
+    /* Images */
+    & :where(img) {
+        border-radius: 0.125rem;
+    }
+
+    /* Horizontal rules — centered ornament */
+    & :where(hr) {
+        margin-block: 3rem;
+        text-align: center;
+        border: none;
+    }
+
+    & :where(hr)::after {
+        display: block;
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+        letter-spacing: 0.5em;
+        content: "* * *";
+    }
+
+    /* Lead text */
+    & :where(.lead) {
+        color: var(--color-text-light);
+    }
+}
+
+/* ── Inline elements ────────────────────────────────────── */
+
+.prose :where(code, pre, samp) {
+    font-family: var(--font-mono);
+    font-feature-settings: normal;
+}
+
+.prose :not(pre) > code {
+    padding: 0.125rem 0.375rem;
+    background-color: var(--color-paper-dark);
+    border-radius: 0.25rem;
+}
+
+.prose mark {
+    padding: 0.125rem 0.25rem;
+    color: var(--color-text);
+    background-color: color-mix(
+        in srgb,
+        var(--color-accent) 15%,
+        var(--color-paper)
+    );
+    border-radius: 0.125rem;
+}
+
+.prose kbd {
+    padding: 0.125rem 0.375rem;
+    font-family: var(--font-sans);
+    font-size: 0.875em;
+    color: var(--color-text);
+    background-color: var(--color-paper-dark);
+    border: 1px solid var(--color-border);
+    border-bottom-width: 2px;
+    border-radius: 0.25rem;
+}
+
+.prose details {
+    padding: 0.75em 1em;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+}
+
+.prose summary {
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.prose dt {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.prose dd {
+    margin-left: 1.5em;
+    color: var(--color-text-light);
+}
+
+.prose [data-footnote-backref] svg {
+    display: inline;
+    margin-left: 0.125em;
+    vertical-align: middle;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.prose blockquote::before,
+.prose blockquote::after {
+    content: none;
+}
+
+.prose blockquote p {
+    margin: 0;
+}
+
+.prose [data-footnote-backref]:hover svg {
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .prose pre,
+    .prose img,
+    .prose blockquote {
+        width: calc(100% + 6rem);
+        max-width: calc(100% + 6rem);
+        margin-right: -3rem;
+        margin-left: -3rem;
+    }
+
+    .prose-bq-rule blockquote {
+        width: auto;
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+.prose section[data-footnotes] {
+    padding-top: 1.5rem;
+    margin-top: 2.5rem;
+    font-size: 0.875em;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+}
+
+.prose blockquote blockquote {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+html.dark .prose-article blockquote {
+    background-color: color-mix(
+        in srgb,
+        var(--color-paper-dark) 40%,
+        transparent
+    );
 }

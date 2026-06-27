@@ -1,0 +1,16 @@
+---
+import HeaderLink from "./header-link.astro";
+import Logo from "./logo.astro";
+---
+
+<header
+  class="py-6 font-sans px-6 mt-4 max-w-2xl mx-auto flex items-center justify-between leading-none"
+>
+  <HeaderLink href="/" class="flex items-center gap-4">
+    <Logo class="h-5 w-auto" />
+    <h1 class="tracking-tight">John Schmidt</h1>
+  </HeaderLink>
+  <nav class="flex items-center gap-6 font-sans text-sm tracking-tight">
+    <HeaderLink href="/archiv">Archiv</HeaderLink>
+  </nav>
+</header>

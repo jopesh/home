@@ -1,0 +1,39 @@
+---
+import Icon from "./icon.astro";
+import ThemePicker from "./theme-picker.astro";
+
+const today = new Date();
+---
+
+<footer class="max-w-2xl mx-auto px-6 my-12">
+  <div class="flex gap-6 mb-4 text-sm">
+    <a
+      href="/rss.xml"
+      class="text-text-light hover:text-accent transition-colors duration-200"
+      ><Icon name="arrow-up-right" class="size-3.5" />
+      rss</a
+    >
+    <a
+      href="https://github.com/jopesh"
+      class="text-text-light hover:text-accent transition-colors duration-200"
+      target="_blank"
+      rel="noopener noreferrer"
+      ><Icon name="arrow-up-right" class="size-3.5" />
+      github</a
+    >
+    <a
+      href="https://www.linkedin.com/in/john-schmidt-aachen"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-text-light hover:text-accent transition-colors duration-200"
+      ><Icon name="arrow-up-right" class="size-3.5" />
+      linkedin</a
+    >
+  </div>
+  <div class="flex items-center justify-between">
+    <p class="text-xs tracking-wide text-text-muted">
+      © {today.getFullYear()} John Schmidt
+    </p>
+    <ThemePicker />
+  </div>
+</footer>

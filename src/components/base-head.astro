@@ -1,0 +1,76 @@
+---
+// Import the global.css file here so that it is included on
+// all pages through the use of the <BaseHead /> component.
+import "../styles/global.css";
+import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2";
+import { SITE_TITLE } from "../consts";
+
+interface Props {
+  description: string;
+  ogImage?: string;
+  title: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const { title, description, ogImage = "/og/home.png" } = Astro.props;
+const ogImageURL = new URL(ogImage, Astro.site);
+---
+
+<script is:inline>
+  (() => {
+    const applyTheme = () => {
+      const stored = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      const isDark = stored === "dark" || (stored !== "light" && prefersDark);
+      document.documentElement.classList.toggle("dark", isDark);
+    };
+    applyTheme();
+    // Re-apply before paint after a view transition swaps the <html> element,
+    // otherwise the incoming (server-rendered) page flashes to the light theme.
+    document.addEventListener("astro:after-swap", applyTheme);
+  })();
+</script>
+
+<!-- Global Metadata -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Preload the primary body font so first paint uses Geist, not a fallback -->
+<link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="sitemap" href="/sitemap-index.xml">
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
+>
+<meta name="generator" content={Astro.generator}>
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL}>
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title}>
+<meta name="description" content={description}>
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content={Astro.url}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:image" content={ogImageURL}>
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content={Astro.url}>
+<meta property="twitter:title" content={title}>
+<meta property="twitter:description" content={description}>
+<meta property="twitter:image" content={ogImageURL}>

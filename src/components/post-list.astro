@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostDate from "./post-date.astro";
+
+interface Props {
+    basePath?: string;
+    posts: CollectionEntry<"blog">[];
+}
+
+const { posts, basePath = "/" } = Astro.props;
+const tid = (id: string) => `pt-${id.replace(/[^a-zA-Z0-9]/g, "-")}`;
+---
+
+<div class="space-y-1">
+    {
+        posts.map((post) => (
+            <a
+                class="group flex items-baseline gap-4 py-1 no-underline"
+                href={`${basePath}${post.id}/`}
+            >
+                <PostDate
+                    class="w-28 shrink-0 font-sans tabular-nums text-sm text-text-muted"
+                    date={post.data.pubDate}
+                    transitionName={`date-${tid(post.id)}`}
+                />
+                <h2
+                    class="flex text-text transition-colors duration-200 group-hover:text-accent"
+                    style={`view-transition-name: title-${tid(post.id)}`}
+                >
+                    {post.data.title}
+                </h2>
+            </a>
+        ))
+    }
+</div>

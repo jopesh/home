@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import PostList from "../components/post-list.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import Base from "../layouts/base.astro";
+
+const posts = await getCollection("blog");
+
+const postsByYear = posts
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .reduce(
+        (acc, post) => {
+            const year = post.data.pubDate.getFullYear();
+            if (!acc[year]) {
+                acc[year] = [];
+            }
+            acc[year].push(post);
+            return acc;
+        },
+        {} as Record<number, typeof posts>,
+    );
+
+const years = Object.keys(postsByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
+---
+
+<Base
+    title={`Archiv – ${SITE_TITLE}`}
+    description={SITE_DESCRIPTION}
+    class="pt-6"
+>
+    <h1 class="text-xl tracking-tight font-light text-text mb-8">Archiv</h1>
+
+    <div class="space-y-12">
+        {
+            years.map((year) => (
+                <section>
+                    <h2 class="mb-4 border-border border-b tabular-nums pb-2 font-light text-shadow-text-muted text-sm">
+                        {year}
+                    </h2>
+                    <PostList posts={postsByYear[year]} />
+                </section>
+            ))
+        }
+    </div>
+</Base>
