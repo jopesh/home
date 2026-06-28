@@ -1,0 +1,27 @@
+# Dependencies & build output (rebuilt inside the image)
+node_modules
+dist
+.astro
+
+# Version control & CI
+.git
+.github
+.gitignore
+
+# Local/editor/OS cruft
+.vscode
+.idea
+.DS_Store
+*.log
+npm-debug.log*
+
+# Env & secrets
+.env
+.env.*
+
+# Docker & docs not needed in the build context
+Dockerfile
+.dockerignore
+README.md
+AGENTS.md
+CLAUDE.md
