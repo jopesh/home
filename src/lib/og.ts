@@ -26,12 +26,12 @@ const fonts = [
   },
 ];
 
-// Theme tones (dark), converted from the OKLCH tokens in global.css.
+// Theme tones — Catppuccin Mocha, matching the dark tokens in global.css.
 const COLOR = {
-  paper: "#0c0c09",
-  text: "#f4f4f0",
-  muted: "#7c7c67",
-  border: "#2b2b22",
+  paper: "#1e1e2e", // base
+  text: "#cdd6f4", // text
+  muted: "#7f849c", // overlay1
+  border: "#45475a", // surface1
 };
 
 // The site logo glyph, monochrome, embedded as an <img> data URI.

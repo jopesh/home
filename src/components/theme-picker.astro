@@ -30,30 +30,29 @@ import Icon from "./icon.astro";
 </div>
 
 <script>
+  // The inline script in base-head.astro owns theme resolution and exposes
+  // `window.applyTheme`; here we only persist the choice and reflect it.
   function initThemePicker() {
-    const buttons = document.querySelectorAll(".theme-btn");
-    const stored = localStorage.getItem("theme") || "system";
+    const buttons = document.querySelectorAll<HTMLElement>(".theme-btn");
+    const current = () => localStorage.getItem("theme") || "system";
 
     function updateActive(value: string) {
       for (const btn of buttons) {
-        const isActive = (btn as HTMLElement).dataset.themeValue === value;
+        const isActive = btn.dataset.themeValue === value;
         btn.classList.toggle("text-text", isActive);
         btn.classList.toggle("text-text-muted", !isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
       }
     }
 
-    updateActive(stored);
+    updateActive(current());
 
     for (const btn of buttons) {
       btn.addEventListener("click", () => {
-        const value = (btn as HTMLElement).dataset.themeValue ?? "system";
+        const value = btn.dataset.themeValue ?? "system";
         localStorage.setItem("theme", value);
         updateActive(value);
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        const isDark = value === "dark" || (value === "system" && prefersDark);
-        document.documentElement.classList.toggle("dark", isDark);
+        window.applyTheme?.();
       });
     }
   }

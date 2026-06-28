@@ -6,37 +6,38 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Base from "../layouts/base.astro";
 
 const posts = (await getCollection("blog"))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION} class="pt-6">
-  <section class="mb-16 space-y-6 text-text-light leading-relaxed">
-    <p>
-      Ich arbeite in zwei Welten: Bildung im Rettungswesen und Webentwicklung.
-      Im Alltag beschäftige ich mich mit der Frage, wie gute Ausbildung
-      organisiert und weiterentwickelt werden kann. Als Webentwickler
-      interessiert mich, wie digitale Werkzeuge dabei helfen können. Hier
-      schreibe ich über Bildungsmanagement, den Einsatz von Technologie in der
-      Lehre und den Versuch, Expertise aus beiden Bereichen füreinander nutzbar
-      zu machen.
-    </p>
-    <p>
-      Anfragen und Rückmeldungen gerne an
-      <a
-        class="underline underline-offset-2 decoration-text-muted/40 hover:text-accent hover:decoration-accent/40 transition-colors duration-200"
-        href="mailto:mail@johnschmidt.de"
-        >mail@johnschmidt.de</a
-      >
-    </p>
-  </section>
+    <section class="mb-16 space-y-6 text-text-light leading-relaxed">
+        <p>
+            Ich arbeite in zwei Welten: Berufsbildung im Rettungswesen und
+            Entwicklung von Webanwendungen.
+        </p>
+        <p>
+            Im Alltag beschäftige ich mich mit der Frage, wie gute Berufsbildung
+            organisiert und weiterentwickelt werden kann. Als Webentwickler
+            interessiert mich, wie digitale Werkzeuge dabei helfen können. Hier
+            schreibe ich über Bildungsmanagement, den Einsatz von Technologie in
+            der Lehre und den Versuch, Expertise aus beiden Bereichen
+            füreinander nutzbar zu machen.
+        </p>
+        <p>
+            Anfragen gerne an{" "}
+            <a
+                class="underline underline-offset-2 font-medium decoration-text-muted/40 hover:text-accent hover:decoration-accent/40 transition-colors duration-200"
+                href="mailto:mail@johnschmidt.de">mail@johnschmidt.de</a
+            >
+        </p>
+    </section>
 
-  <section>
-    <PostList posts={posts} />
-    <a
-      class="mt-4 inline-block font-sans text-sm text-text-muted/50 hover:text-text-muted transition-colors duration-200"
-      href="/archiv"
-      >Archiv <Icon name="caret-right" class="size-3" /></a
-    >
-  </section>
+    <section>
+        <PostList posts={posts} />
+        <a
+            class="mt-4 inline-block font-sans text-sm text-text-muted hover:text-text-light transition-colors duration-200"
+            href="/archiv">Archiv <Icon name="caret-right" class="size-3" /></a
+        >
+    </section>
 </Base>

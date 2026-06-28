@@ -74,6 +74,20 @@ const fadeUp = {
           transform: translateY(-4px);
         }
       }
+      /*
+       * Browser back/forward navigations restore the previous scroll position
+       * *during* the swap. Running the page animation on top of that restore
+       * makes the fixed transition snapshot animate from the top of the page,
+       * so the view appears to jump to the top and then slam back into place.
+       * Astro marks history-back navigations with `data-astro-transition="back"`
+       * on <html> (present while the snapshots animate), so skip the animation
+       * for them — back then feels instant and the scroll position is kept.
+       */
+      html[data-astro-transition="back"]::view-transition-group(*),
+      html[data-astro-transition="back"]::view-transition-old(*),
+      html[data-astro-transition="back"]::view-transition-new(*) {
+        animation: none !important;
+      }
       @media (prefers-reduced-motion: reduce) {
         ::view-transition-group(*),
         ::view-transition-old(*),
@@ -84,7 +98,7 @@ const fadeUp = {
     </style>
   </head>
   <body class="font-sans text-text bg-paper">
-    <Header />
+    <Header transition:persist />
     <main
       transition:animate={fadeUp}
       class:list={["max-w-2xl mx-auto px-6 pb-12", className]}

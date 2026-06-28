@@ -1,0 +1,34 @@
+---
+title: "Kruut un Smook"
+description: "A headless e-commerce app for a Hamburg based spice factory start-up. Built with Next.js, Dato CMS and Shopify."
+pubDate: "2022-02-13"
+heroImage: "../../assets/blog/kruut-un-smook/012c224bd59ed2bd03f24b29c768712ebdb3d49e.png"
+---
+
+This project is a headless e-commerce application for a small start-up spice factory. It's built on top of Shopify and possesses an extra content-management layer in Dato CMS which is synced to the Shopify product data via a serverless architecture.
+
+![Homepage of the website](../../assets/blog/kruut-un-smook/ab1f5d20ef555713ea255c59798994b488d1d4b0.png)
+
+## Initial Problem
+
+The previous online shop was built with WordPress, and its popular e-commerce plugin WooCommerce. Though the back-end experience was good and well known to staff - the front-end experience didn't quite improve over time. Many plugins were bought and stacked intending to maximize the speed and SEO experience. Plugin issues interrupted the commerce flow several times. Thus, a new solution was needed and preferably one running over a more reliable platform.
+
+![Overview of the checkout page](../../assets/blog/kruut-un-smook/c24cf8dffaf2411348b3eeff6ad2d4432834ee8b.png)
+
+## Technology Choices
+
+Loading speed and responsiveness can [have a huge impact](https://www.shopify.com/enterprise/site-performance-page-speed-ecommerce) on e-commerce performances. Therefore, a fast front-end and maintenance-friendly infrastructure was the key topic in this project. Next.js delivers fast performance, a maintenance friendly structure and a built-in layer for serverless functions out of the box. Thus, it could deliver a solid front-end. The closest choice for the commerce structure was Shopify with its established workflows and scalability. Shopify handles all e-commerce workflows (price management, checkout, order processing, integration with accounting, e-mails, etc.).
+
+Due to limited content structure on a per-product basis within Shopify (one single description field, WYSIWYG), Dato CMS joined the stack. It enabled endless flexibility in content management and structure for the client. The product metadata needed in the front-end is synced (in real-time) to the CMS with a serverless function integrated into the front-end structure. The source of truth for the front-end is the CMS alone.
+
+![Kruut un smook data flow schema](../../assets/blog/kruut-un-smook/f55fad1a34b6a6822e7917b2221ddf37036e7c18.png)
+
+## Static Generation & Revalidation
+
+Since the product metadata does not change frequently the entire shop is statically pre-generated and served. In certain intervals, the data is revalidated with the CMS and updated in the background, if needed. Currently, the only server-rendered page within the project is the search interface. Though I wish to improve that solution in the near future.
+
+![Mobile view of the website](../../assets/blog/kruut-un-smook/dcff973af5d474f619651689b34c175216149cb6.png)
+
+## Final Thoughts
+
+Due to the increasing project size during the development, it was hard to keep an overview of the project. I spend a lot (if not most) of the time trying to sort and refactor code to improve re-usability and structure. Many components could be re-used and simplified in the process. Working with the CMS as a source of truth was - once the sync was established - a lot easier for the front-end development. It took a lot of heavy lifting (like image processing) off my shoulders. The project turned out to be a simple and lightweight shop. We've intentionally left out heavy marketing components and huge images to simplify the experience and to communicate the brands values. So far, we could increase the conversion rates by almost 30%.

@@ -3,40 +3,44 @@ import type { CollectionEntry } from "astro:content";
 import BlurImage from "../components/blur-image.astro";
 import PostDate from "../components/post-date.astro";
 import { SITE_TITLE } from "../consts";
+import { dateTransitionName, titleTransitionName } from "../lib/transitions";
 import Base from "./base.astro";
 
 type Props = CollectionEntry<"blog">["data"] & { slug: string };
 
 const { title, description, pubDate, updatedDate, heroImage, slug } =
-  Astro.props;
+    Astro.props;
 ---
 
 <Base
-  title={`${title} – ${SITE_TITLE}`}
-  description={description}
-  ogImage={`/og/${slug}.png`}
-  class="pt-8"
+    title={`${title} – ${SITE_TITLE}`}
+    description={description}
+    ogImage={`/og/${slug}.png`}
+    class="pt-8"
 >
     <article>
         {
             heroImage && (
-                <BlurImage
-                    alt=""
-                    class="mb-10"
-                    height={510}
-                    src={heroImage}
-                    width={1020}
-                />
+                <div class="mb-10" style="view-transition-name: post-hero">
+                    <BlurImage
+                        alt=""
+                        height={510}
+                        src={heroImage}
+                        width={1020}
+                    />
+                </div>
             )
         }
         <header class="mb-12">
             <PostDate
                 date={pubDate}
                 updatedDate={updatedDate}
-                class="mb-4 text-sm tabular-nums text-text-muted"
+                class="mb-4 w-fit text-sm tabular-nums text-text-muted"
+                transitionName={dateTransitionName(slug)}
             />
             <h2
-                class="flex text-3xl font-light leading-tight text-text md:text-4xl"
+                class="flex w-fit text-3xl font-extrabold tracking-tight leading-tight text-text md:text-4xl"
+                style={`view-transition-name: ${titleTransitionName(slug)}`}
             >
                 {title}
             </h2>

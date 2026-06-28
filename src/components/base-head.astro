@@ -19,18 +19,26 @@ const ogImageURL = new URL(ogImage, Astro.site);
 
 <script is:inline>
   (() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    // Single source of truth for resolving the active theme. A stored
+    // "light"/"dark" pins the choice; anything else ("system" / unset)
+    // follows the OS preference.
     const applyTheme = () => {
       const stored = localStorage.getItem("theme");
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      const isDark = stored === "dark" || (stored !== "light" && prefersDark);
+      const isDark = stored === "dark" || (stored !== "light" && mq.matches);
       document.documentElement.classList.toggle("dark", isDark);
     };
     applyTheme();
+    // Follow the OS live when the visitor hasn't pinned light or dark.
+    mq.addEventListener("change", () => {
+      const stored = localStorage.getItem("theme");
+      if (stored !== "light" && stored !== "dark") applyTheme();
+    });
     // Re-apply before paint after a view transition swaps the <html> element,
     // otherwise the incoming (server-rendered) page flashes to the light theme.
     document.addEventListener("astro:after-swap", applyTheme);
+    // Expose so the theme picker reuses this resolution instead of repeating it.
+    window.applyTheme = applyTheme;
   })();
 </script>
 

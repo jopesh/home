@@ -7,30 +7,34 @@
 
 html {
     overflow-y: scroll;
+    color-scheme: light;
 }
 
 @theme {
     --font-sans: "Geist Variable", sans-serif;
     --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
-    --color-accent: oklch(52% 0.13 107.3);
-    --color-accent-dark: oklch(42% 0.11 107.3);
-    --color-paper: oklch(98.8% 0.003 106.5);
-    --color-paper-dark: oklch(96.6% 0.005 106.5);
-    --color-text: oklch(22.8% 0.013 107.4);
-    --color-text-light: oklch(39.4% 0.023 107.4);
-    --color-text-muted: oklch(73.7% 0.021 106.9);
-    --color-border: oklch(93% 0.007 106.5);
+
+    /* Light theme — Catppuccin Latte (accent: Blue) */
+    --color-accent: #1e66f5; /* blue */
+    --color-accent-dark: #1a52c4; /* darkened blue */
+    --color-paper: #eff1f5; /* base */
+    --color-paper-dark: #e6e9ef; /* mantle */
+    --color-text: #2f3142; /* darkened from text (#4c4f69) for stronger contrast */
+    --color-text-light: #41445b; /* darkened from subtext1 (#5c5f77) for body copy */
+    --color-text-muted: #8c8fa1; /* overlay1 */
+    --color-border: #ccd0da; /* surface0 */
 }
 
 html.dark {
-    --color-accent: oklch(70% 0.11 106.9);
-    --color-accent-dark: oklch(82% 0.09 106.6);
-    --color-paper: oklch(15.3% 0.006 107.1);
-    --color-paper-dark: oklch(22.8% 0.013 107.4);
-    --color-text: oklch(96.6% 0.005 106.5);
-    --color-text-light: oklch(88% 0.011 106.6);
-    --color-text-muted: oklch(58% 0.031 107.3);
-    --color-border: oklch(28.6% 0.016 107.4);
+    /* Dark theme — Catppuccin Mocha (accent: Blue) */
+    --color-accent: #89b4fa; /* blue */
+    --color-accent-dark: #b4befe; /* lavender */
+    --color-paper: #1e1e2e; /* base */
+    --color-paper-dark: #313244; /* surface0 */
+    --color-text: #cdd6f4; /* text */
+    --color-text-light: #bac2de; /* subtext1 */
+    --color-text-muted: #7f849c; /* overlay1 */
+    --color-border: #45475a; /* surface1 */
     color-scheme: dark;
 }
 
@@ -47,7 +51,7 @@ html.dark .astro-code span {
     --tw-prose-headings: var(--color-text);
 
     & :where(h2, h3, h4, h5, h6) {
-        font-weight: 300;
+        font-weight: 600;
         color: var(--color-text);
         letter-spacing: -0.01em;
     }
