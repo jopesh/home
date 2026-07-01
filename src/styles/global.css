@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
 @plugin "@tailwindcss/typography";
 
@@ -11,7 +11,7 @@ html {
 }
 
 @theme {
-    --font-sans: "Geist Variable", sans-serif;
+    --font-sans: "Inter Variable", sans-serif;
     --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
     /* Light theme — Catppuccin Latte (accent: Blue) */

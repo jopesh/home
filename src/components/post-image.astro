@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets";
+import type { ComponentProps } from "astro/types";
+
+type Props = ComponentProps<typeof Image>;
+
+// Body images render inside the ~720px article column (full-bleed on desktop),
+// not at viewport width. Override Astro's default `constrained` sizes — which
+// assumes near-100vw — so the browser stops fetching the 1400w candidate for a
+// 720px slot. The zoomed (lightbox) view pulls the full-res file separately.
+const imageProps = {
+  sizes: "(min-width: 768px) 720px, calc(100vw - 3rem)",
+  ...Astro.props,
+} as Props;
+---
+
+<Image {...imageProps} />

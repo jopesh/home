@@ -4,6 +4,10 @@ description: "Creating a view counter can be difficult to do. You might need to 
 pubDate: "2022-02-14"
 ---
 
+import PostImage from "../../components/post-image.astro";
+import img1 from "../../assets/blog/displaying-a-view-counter-with-plausible-analytics-api-data/b33c6e2c1e0f1f52d6ccc8d9e0ec7070282d035b.png";
+import img2 from "../../assets/blog/displaying-a-view-counter-with-plausible-analytics-api-data/6339313725e3437cda9f64082ee4ba8fe635df24.png";
+
 Whilst rebuilding my personal homepage, I wanted to implement a simple view counter for my posts. I've seen this a few times on popular blogs (e.g. [Lee Robinson](https://leerob.io/)) and thought it would be a nice thing to build.
 
 Usually, these kinds of view counters involve some kind of database-API setup. Hence, I thought of multiple possibilities such as [PlanetScale](https://planetscale.com/), [Upstash](https://upstash.com/) or even a more custom approach with [Prisma](https://www.prisma.io/) and some kind of self-hosted database. I do have an own VPS running in Germany, which currently only homes my self-hosted [Plausible Analytics](https://plausible.io/) instance.
@@ -16,7 +20,7 @@ This was when I realized that my Analytics instance already has all the data I n
 
 To work with our API, we first need to create an API token in our Plausible Analytics dashboard. You can find the corresponding option in your user settings.
 
-![Location of the API key settings in Plausible Analytics](../../assets/blog/displaying-a-view-counter-with-plausible-analytics-api-data/b33c6e2c1e0f1f52d6ccc8d9e0ec7070282d035b.png)
+<PostImage src={img1} alt="Location of the API key settings in Plausible Analytics" />
 
 ### Setting up an API route
 
@@ -42,9 +46,9 @@ export default viewsHandler
 
 Now we can fetch our data from the Plausible API. We need to send a `GET` request to our API endpoint and query for the needed information. We are going for the `/api/v1/stats/aggregate` endpoint because we want to cumulate a set of data (in our case, the views) into one value. The API needs a few parameters in the following syntax to provide us with the needed data:
 
-`/api/v1/stats/aggregate?site_id=`_`<SITE_ID>`_`&period=`_`<PERIOD>`_`&filters=event:page==`_`<SLUG>`_
-
-(I've marked the placeholders with a set of brackets like this: `<PLACEHOLDER>`)
+```url
+/api/v1/stats/aggregate?site_id=<SITE_ID>&period=<PERIOD>&filters=event:page==<SLUG>
+```
 
 Let's break this down:
 
@@ -172,7 +176,7 @@ In the component, we're fetching the data with the useSWR hook. We can determine
 
 If the data (or an error) arrived, we can display our final component featuring our data. Here, I am being optimistic and assume that there will be always _some_ kind of data returned from the API. I did not set up a solution if the request only yields an `error` and no data.
 
-![Loading state of the DisplayViews component](../../assets/blog/displaying-a-view-counter-with-plausible-analytics-api-data/6339313725e3437cda9f64082ee4ba8fe635df24.png)
+<PostImage src={img2} alt="Loading state of the DisplayViews component" />
 
 ## Wrapping up
 

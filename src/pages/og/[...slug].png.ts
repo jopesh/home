@@ -1,16 +1,10 @@
 import type { APIRoute, GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+import { formatDate } from "../../lib/date";
 import { type OgData, renderOgImage } from "../../lib/og";
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString("de-DE", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+import { getSortedPosts } from "../../lib/posts";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection("blog");
+  const posts = await getSortedPosts();
 
   return [
     {

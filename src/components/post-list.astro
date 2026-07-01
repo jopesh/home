@@ -4,22 +4,21 @@ import { dateTransitionName, titleTransitionName } from "../lib/transitions";
 import PostDate from "./post-date.astro";
 
 interface Props {
-    basePath?: string;
     posts: CollectionEntry<"blog">[];
 }
 
-const { posts, basePath = "/" } = Astro.props;
+const { posts } = Astro.props;
 ---
 
-<div class="space-y-1">
+<div class="space-y-2">
     {
         posts.map((post) => (
             <a
-                class="group flex items-baseline gap-4 py-1 no-underline"
-                href={`${basePath}${post.id}/`}
+                class="group flex items-baseline gap-4 text-sm py-1 no-underline"
+                href={`/${post.id}/`}
             >
                 <PostDate
-                    class="w-28 shrink-0 font-sans tabular-nums text-sm text-text-muted"
+                    class="w-32 shrink-0 text-text-muted"
                     date={post.data.pubDate}
                     transitionName={dateTransitionName(post.id)}
                 />

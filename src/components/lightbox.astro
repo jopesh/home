@@ -1,0 +1,45 @@
+---
+// Image zoom for in-content post images, rendered once in base.astro.
+// Powered by medium-zoom: click a `.prose-article` image to zoom it from its
+// place, click again / scroll / Escape to close.
+import "medium-zoom/dist/style.css";
+---
+
+<script>
+    import mediumZoom from "medium-zoom";
+    import type { Zoom } from "medium-zoom";
+
+    let zoom: Zoom | null = null;
+
+    function initZoom() {
+        // Re-bind to the freshly swapped-in article on each navigation.
+        zoom?.detach();
+        const images = [
+            ...document.querySelectorAll<HTMLImageElement>(".prose-article img"),
+        ].filter((img) => !img.closest("a")); // skip linked images
+        // Inline `sizes` targets the ~720px column, so the loaded candidate is
+        // small. `img.src` is the largest (full-res) candidate — hand it to
+        // medium-zoom so the zoomed view stays sharp.
+        for (const img of images) img.dataset.zoomSrc = img.src;
+        zoom = mediumZoom(images, {
+            background: "rgba(0, 0, 0, 0.7)",
+            margin: 24,
+        });
+    }
+
+    // `astro:page-load` fires on first load and after every ClientRouter swap.
+    document.addEventListener("astro:page-load", initZoom);
+</script>
+
+<style is:global>
+    /* Match the frosted backdrop of the previous lightbox. */
+    .medium-zoom-overlay {
+        backdrop-filter: blur(4px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .medium-zoom-image,
+        .medium-zoom-overlay {
+            transition-duration: 0s !important;
+        }
+    }
+</style>

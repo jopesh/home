@@ -1,13 +1,11 @@
 ---
-import { getCollection } from "astro:content";
 import Icon from "../components/icon.astro";
 import PostList from "../components/post-list.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Base from "../layouts/base.astro";
+import { getSortedPosts } from "../lib/posts";
 
-const posts = (await getCollection("blog"))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 3);
+const posts = (await getSortedPosts()).slice(0, 3);
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION} class="pt-6">

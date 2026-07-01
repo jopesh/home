@@ -2,7 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import "../styles/global.css";
-import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2";
 import { SITE_TITLE } from "../consts";
 
 interface Props {
@@ -46,8 +46,8 @@ const ogImageURL = new URL(ogImage, Astro.site);
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!-- Preload the primary body font so first paint uses Geist, not a fallback -->
-<link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
+<!-- Preload the primary body font so first paint uses Inter, not a fallback -->
+<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" href="/favicon.ico" sizes="48x48">

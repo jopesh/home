@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import BaseHead from "../components/base-head.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
+import Lightbox from "../components/lightbox.astro";
 
 interface Props {
   class?: string;
@@ -106,5 +107,6 @@ const fadeUp = {
       <slot />
     </main>
     <Footer />
+    <Lightbox />
   </body>
 </html>

@@ -5,15 +5,21 @@ pubDate: "2022-02-13"
 heroImage: "../../assets/blog/kruut-un-smook/012c224bd59ed2bd03f24b29c768712ebdb3d49e.png"
 ---
 
+import PostImage from "../../components/post-image.astro";
+import img1 from "../../assets/blog/kruut-un-smook/ab1f5d20ef555713ea255c59798994b488d1d4b0.png";
+import img2 from "../../assets/blog/kruut-un-smook/c24cf8dffaf2411348b3eeff6ad2d4432834ee8b.png";
+import img3 from "../../assets/blog/kruut-un-smook/f55fad1a34b6a6822e7917b2221ddf37036e7c18.png";
+import img4 from "../../assets/blog/kruut-un-smook/dcff973af5d474f619651689b34c175216149cb6.png";
+
 This project is a headless e-commerce application for a small start-up spice factory. It's built on top of Shopify and possesses an extra content-management layer in Dato CMS which is synced to the Shopify product data via a serverless architecture.
 
-![Homepage of the website](../../assets/blog/kruut-un-smook/ab1f5d20ef555713ea255c59798994b488d1d4b0.png)
+<PostImage src={img1} alt="Homepage of the website" />
 
 ## Initial Problem
 
 The previous online shop was built with WordPress, and its popular e-commerce plugin WooCommerce. Though the back-end experience was good and well known to staff - the front-end experience didn't quite improve over time. Many plugins were bought and stacked intending to maximize the speed and SEO experience. Plugin issues interrupted the commerce flow several times. Thus, a new solution was needed and preferably one running over a more reliable platform.
 
-![Overview of the checkout page](../../assets/blog/kruut-un-smook/c24cf8dffaf2411348b3eeff6ad2d4432834ee8b.png)
+<PostImage src={img2} alt="Overview of the checkout page" />
 
 ## Technology Choices
 
@@ -21,13 +27,13 @@ Loading speed and responsiveness can [have a huge impact](https://www.shopify.co
 
 Due to limited content structure on a per-product basis within Shopify (one single description field, WYSIWYG), Dato CMS joined the stack. It enabled endless flexibility in content management and structure for the client. The product metadata needed in the front-end is synced (in real-time) to the CMS with a serverless function integrated into the front-end structure. The source of truth for the front-end is the CMS alone.
 
-![Kruut un smook data flow schema](../../assets/blog/kruut-un-smook/f55fad1a34b6a6822e7917b2221ddf37036e7c18.png)
+<PostImage src={img3} alt="Kruut un smook data flow schema" />
 
 ## Static Generation & Revalidation
 
 Since the product metadata does not change frequently the entire shop is statically pre-generated and served. In certain intervals, the data is revalidated with the CMS and updated in the background, if needed. Currently, the only server-rendered page within the project is the search interface. Though I wish to improve that solution in the near future.
 
-![Mobile view of the website](../../assets/blog/kruut-un-smook/dcff973af5d474f619651689b34c175216149cb6.png)
+<PostImage src={img4} alt="Mobile view of the website" />
 
 ## Final Thoughts
 

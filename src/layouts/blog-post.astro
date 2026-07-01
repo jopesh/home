@@ -25,6 +25,7 @@ const { title, description, pubDate, updatedDate, heroImage, slug } =
                     <BlurImage
                         alt=""
                         height={510}
+                        layout="none"
                         src={heroImage}
                         width={1020}
                     />
@@ -35,11 +36,11 @@ const { title, description, pubDate, updatedDate, heroImage, slug } =
             <PostDate
                 date={pubDate}
                 updatedDate={updatedDate}
-                class="mb-4 w-fit text-sm tabular-nums text-text-muted"
+                class="mb-4 w-fit text-sm text-text-muted"
                 transitionName={dateTransitionName(slug)}
             />
             <h2
-                class="flex w-fit text-3xl font-extrabold tracking-tight leading-tight text-text md:text-4xl"
+                class="flex w-fit text-3xl font-bold tracking-tight leading-tight text-text md:text-4xl"
                 style={`view-transition-name: ${titleTransitionName(slug)}`}
             >
                 {title}

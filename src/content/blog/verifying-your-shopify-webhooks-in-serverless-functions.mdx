@@ -4,6 +4,9 @@ description: "A journey through the pitfalls of verifying the origin of your Sho
 pubDate: "2022-01-30"
 ---
 
+import PostImage from "../../components/post-image.astro";
+import img1 from "../../assets/blog/verifying-your-shopify-webhooks-in-serverless-functions/e2f4d38fcf412a2f3131d07468d3400429602918.png";
+
 In my [last post](https://johnschmidt.de/blog/keep-shopify-and-your-headless-cms-in-sync) I've illustrated a basic approach to synchronize Shopify product data with your headless CMS using serverless functions. To avoid unwelcome API calls and even malicious attempts to modify your data we can use a HMAC based verification [procedure](https://shopify.dev/tutorials/manage-webhooks#verifying-webhooks) provided by Shopify.
 
 Using a secret key we can digest the request body into a HMAC hash. Comparing this to a HMAC hash provided in the request headers we can determine if the request is valid or not. Just **a few modifications** to our API are needed to verify the origin of received webhooks and ensure the integrity of our sync workflow.
@@ -14,7 +17,7 @@ In this example I am working with serverless functions provided by **Next.js** b
 
 You will also need a **secret key** to digest the request body into a HMAC hash. You can find it in the "Notification" settings of your store dashboard at the very bottom. I'd recommend storing it in an environment variable in your project to keep it safe and sound.
 
-![Location of the Shopify webhook key](../../assets/blog/verifying-your-shopify-webhooks-in-serverless-functions/e2f4d38fcf412a2f3131d07468d3400429602918.png)
+<PostImage src={img1} alt="Location of the Shopify webhook key" />
 
 ## Raw Body Needed
 

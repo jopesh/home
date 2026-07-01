@@ -4,11 +4,15 @@ description: "An approach to sync data from Shopify with a headless CMS in real-
 pubDate: "2022-01-30"
 ---
 
+import PostImage from "../../components/post-image.astro";
+import img1 from "../../assets/blog/keep-shopify-and-your-headless-cms-in-sync/f55fad1a34b6a6822e7917b2221ddf37036e7c18.png";
+import img2 from "../../assets/blog/keep-shopify-and-your-headless-cms-in-sync/914becfda9b03607852e7474f9328a7b18013714.png";
+
 For one of my latest projects I had to figure a way to keep the data from my clients Shopify instance in sync with the headless CMS used for the rest of the content. In this project we were using [Dato CMS](https://datocms.com) as our headless CMS and [Next.js](https://nextjs.org/) as hybrid (static and server-rendered if needed) frontend. But for those of you using different products: I'd assume that you could transfer the general approach of this solution to them too.
 
 The general idea of the content management structure was to use Shopify exclusively as the provider for the basic product data like pricing, shipping, inventory, taxes and variants. It could also provide a solid checkout solution at the end of our custom front-end flow. The content in Dato CMS builds on the basic product data and extends the possibilities. In my last project it provides additional content like nutritions, images and descriptions. It also contains all the _non e-commerce_ content of the project. I've illustrated the basic data structure of the project below.
 
-![Data schema](../../assets/blog/keep-shopify-and-your-headless-cms-in-sync/f55fad1a34b6a6822e7917b2221ddf37036e7c18.png)
+<PostImage src={img1} alt="Data schema" />
 
 ## Prerequisites
 
@@ -99,7 +103,7 @@ export default async (req, res) => {
 
 With the clients `items.all()` method we can retrieve and filter an array of our products. To determine, if the product of concern already exists we can pass any field of the content model to our method and filter the results. In my case, I've given the product model a `productId` field, which will contain the ID coming from Shopify, to make each product uniquely distinctive. To select the correct content model for our search, we need to pass in its  model ID. It can be found in the Dato CMS administration dashboard under the models settings (image below).
 
-![Location of the model ID in Dato CMS](../../assets/blog/keep-shopify-and-your-headless-cms-in-sync/914becfda9b03607852e7474f9328a7b18013714.png)
+<PostImage src={img2} alt="Location of the model ID in Dato CMS" />
 
 Now we can pass the information we got into the client and retrieve an array of matching products.
 

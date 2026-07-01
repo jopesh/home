@@ -2,27 +2,27 @@ import { readFileSync } from "node:fs";
 import satori from "satori";
 import sharp from "sharp";
 
-// Geist static TTFs (satori cannot read the woff2 the site ships). Read from
+// Inter static WOFFs (satori cannot read the woff2 the site ships). Read from
 // the project root — `astro build` runs static endpoints with cwd = root.
 const FONT_DIR = "./src/assets/fonts";
 const fonts = [
   {
-    name: "Geist",
+    name: "Inter",
     weight: 300 as const,
     style: "normal" as const,
-    data: readFileSync(`${FONT_DIR}/Geist-Light.ttf`),
+    data: readFileSync(`${FONT_DIR}/Inter-Light.woff`),
   },
   {
-    name: "Geist",
+    name: "Inter",
     weight: 400 as const,
     style: "normal" as const,
-    data: readFileSync(`${FONT_DIR}/Geist-Regular.ttf`),
+    data: readFileSync(`${FONT_DIR}/Inter-Regular.woff`),
   },
   {
-    name: "Geist",
+    name: "Inter",
     weight: 500 as const,
     style: "normal" as const,
-    data: readFileSync(`${FONT_DIR}/Geist-Medium.ttf`),
+    data: readFileSync(`${FONT_DIR}/Inter-Medium.woff`),
   },
 ];
 
@@ -77,7 +77,7 @@ export async function renderOgImage({
         padding: "80px",
         backgroundColor: COLOR.paper,
         color: COLOR.text,
-        fontFamily: "Geist",
+        fontFamily: "Inter",
       },
     },
     [

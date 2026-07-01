@@ -1,24 +1,31 @@
 ---
-import FormattedDate from "./formatted-date.astro";
+import { formatDate } from "../lib/date";
 
 interface Props {
-  class?: string;
-  date: Date;
-  transitionName?: string;
-  updatedDate?: Date;
+    class?: string;
+    date: Date;
+    transitionName?: string;
+    updatedDate?: Date;
 }
 
 const { date, updatedDate, class: className, transitionName } = Astro.props;
 ---
 
 <p
-  class:list={[className, "flex"]}
-  style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
+    class:list={[className, "flex tabular-nums"]}
+    style={transitionName
+        ? `view-transition-name: ${transitionName}`
+        : undefined}
 >
-  <FormattedDate date={date} />
-  {updatedDate && (
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    {
+        updatedDate && (
             <span class="italic">
-                — Zuletzt aktualisiert am <FormattedDate date={updatedDate} />
+                — Zuletzt aktualisiert am{" "}
+                <time datetime={updatedDate.toISOString()}>
+                    {formatDate(updatedDate)}
+                </time>
             </span>
-        )}
+        )
+    }
 </p>

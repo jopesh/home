@@ -15,6 +15,13 @@ import node from "@astrojs/node";
 export default defineConfig({
   site: "https://johnschmidt.de",
 
+  image: {
+    // Auto-generate `srcset`/`sizes` for all optimized images — including the
+    // Markdown body images, which can't take per-image props. The hero opts out
+    // (layout="none" in blog-post.astro) to keep its fixed 2:1 crop.
+    layout: "constrained",
+  },
+
   markdown: {
     // Dual light/dark themes — the light colors render inline and the
     // `html.dark` rules in global.css swap to the `--shiki-dark` variables.
