@@ -4,19 +4,13 @@ import { formatDate } from "../lib/date";
 interface Props {
     class?: string;
     date: Date;
-    transitionName?: string;
     updatedDate?: Date;
 }
 
-const { date, updatedDate, class: className, transitionName } = Astro.props;
+const { date, updatedDate, class: className } = Astro.props;
 ---
 
-<p
-    class:list={[className, "flex tabular-nums"]}
-    style={transitionName
-        ? `view-transition-name: ${transitionName}`
-        : undefined}
->
+<p class:list={[className, "flex tabular-nums"]}>
     <time datetime={date.toISOString()}>{formatDate(date)}</time>
     {
         updatedDate && (

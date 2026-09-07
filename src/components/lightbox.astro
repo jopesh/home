@@ -27,7 +27,11 @@ import "medium-zoom/dist/style.css";
         });
     }
 
-    // `astro:page-load` fires on first load and after every ClientRouter swap.
+    // This module script runs once the DOM is parsed. Post pages opt out of
+    // the ClientRouter, so `astro:page-load` never fires there — bind directly
+    // and additionally on every router swap for the pages that do use it
+    // (`initZoom` detaches first, so re-running it is safe).
+    initZoom();
     document.addEventListener("astro:page-load", initZoom);
 </script>
 

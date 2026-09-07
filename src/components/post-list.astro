@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { dateTransitionName, titleTransitionName } from "../lib/transitions";
 import PostDate from "./post-date.astro";
 
 interface Props {
@@ -20,12 +19,8 @@ const { posts } = Astro.props;
                 <PostDate
                     class="w-32 shrink-0 text-text-muted"
                     date={post.data.pubDate}
-                    transitionName={dateTransitionName(post.id)}
                 />
-                <h2
-                    class="flex text-text transition-colors duration-200 group-hover:text-accent"
-                    style={`view-transition-name: ${titleTransitionName(post.id)}`}
-                >
+                <h2 class="flex text-text transition-colors duration-200 group-hover:text-accent">
                     {post.data.title}
                 </h2>
             </a>

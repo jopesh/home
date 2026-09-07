@@ -23,10 +23,12 @@ const ogImageURL = new URL(ogImage, Astro.site);
     // Single source of truth for resolving the active theme. A stored
     // "light"/"dark" pins the choice; anything else ("system" / unset)
     // follows the OS preference.
-    const applyTheme = () => {
+    const prefersDark = () => {
       const stored = localStorage.getItem("theme");
-      const isDark = stored === "dark" || (stored !== "light" && mq.matches);
-      document.documentElement.classList.toggle("dark", isDark);
+      return stored === "dark" || (stored !== "light" && mq.matches);
+    };
+    const applyTheme = () => {
+      document.documentElement.classList.toggle("dark", prefersDark());
     };
     applyTheme();
     // Follow the OS live when the visitor hasn't pinned light or dark.
@@ -34,8 +36,14 @@ const ogImageURL = new URL(ogImage, Astro.site);
       const stored = localStorage.getItem("theme");
       if (stored !== "light" && stored !== "dark") applyTheme();
     });
-    // Re-apply before paint after a view transition swaps the <html> element,
-    // otherwise the incoming (server-rendered) page flashes to the light theme.
+    // The server-rendered document carries no theme class, so mark the
+    // incoming <html> before it is swapped in: the swapped-in page is then
+    // never briefly light, and the transition never snapshots a light frame.
+    document.addEventListener("astro:before-swap", (event) => {
+      event.newDocument.documentElement.classList.toggle("dark", prefersDark());
+    });
+    // Belt and braces for the swap itself (and the no-view-transitions
+    // fallback path), still before paint.
     document.addEventListener("astro:after-swap", applyTheme);
     // Expose so the theme picker reuses this resolution instead of repeating it.
     window.applyTheme = applyTheme;

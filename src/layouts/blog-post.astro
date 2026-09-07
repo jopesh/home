@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 import BlurImage from "../components/blur-image.astro";
 import PostDate from "../components/post-date.astro";
 import { SITE_TITLE } from "../consts";
-import { dateTransitionName, titleTransitionName } from "../lib/transitions";
 import Base from "./base.astro";
 
 type Props = CollectionEntry<"blog">["data"] & { slug: string };
@@ -17,11 +16,12 @@ const { title, description, pubDate, updatedDate, heroImage, slug } =
     description={description}
     ogImage={`/og/${slug}.png`}
     class="pt-8"
+    transitions={false}
 >
     <article>
         {
             heroImage && (
-                <div class="mb-10" style="view-transition-name: post-hero">
+                <div class="mb-10">
                     <BlurImage
                         alt=""
                         height={510}
@@ -37,11 +37,9 @@ const { title, description, pubDate, updatedDate, heroImage, slug } =
                 date={pubDate}
                 updatedDate={updatedDate}
                 class="mb-4 w-fit text-sm text-text-muted"
-                transitionName={dateTransitionName(slug)}
             />
             <h2
                 class="flex w-fit text-3xl font-bold tracking-tight leading-tight text-text md:text-4xl"
-                style={`view-transition-name: ${titleTransitionName(slug)}`}
             >
                 {title}
             </h2>

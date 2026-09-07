@@ -10,9 +10,23 @@ interface Props {
   description: string;
   ogImage?: string;
   title: string;
+  /**
+   * Opt a page out of view transitions. Without the `<ClientRouter />` marker
+   * in the incoming document the router bails out of the swap and lets the
+   * browser do a normal page load, so both directions (to and from such a
+   * page) are plain navigations. Post pages use this; the list pages keep the
+   * animated swap between each other.
+   */
+  transitions?: boolean;
 }
 
-const { title, description, class: className, ogImage } = Astro.props;
+const {
+  title,
+  description,
+  class: className,
+  ogImage,
+  transitions = true,
+} = Astro.props;
 
 const fadeUp = {
   forwards: {
@@ -61,7 +75,7 @@ const fadeUp = {
 <html lang="de">
   <head>
     <BaseHead title={title} description={description} ogImage={ogImage} />
-    <ClientRouter />
+    {transitions && <ClientRouter />}
     <style is:global>
       @keyframes fade-up-in {
         from {
@@ -76,6 +90,20 @@ const fadeUp = {
         }
       }
       /*
+       * The UA blends the two snapshots with `mix-blend-mode: plus-lighter`,
+       * which only composites cleanly when their opacities sum to 1 at every
+       * frame — true for the default cross-fade, but not for the custom
+       * timings above (0.15s out vs. 0.25s in, delayed). Where the sum falls
+       * short the page background behind the snapshots washes through, which
+       * reads as a flash of white on the light theme; where it overshoots the
+       * content blows out. Compositing normally costs nothing here and is
+       * stable across engines.
+       */
+      ::view-transition-old(*),
+      ::view-transition-new(*) {
+        mix-blend-mode: normal;
+      }
+      /*
        * Browser back/forward navigations restore the previous scroll position
        * *during* the swap. Running the page animation on top of that restore
        * makes the fixed transition snapshot animate from the top of the page,
@@ -83,15 +111,21 @@ const fadeUp = {
        * Astro marks history-back navigations with `data-astro-transition="back"`
        * on <html> (present while the snapshots animate), so skip the animation
        * for them — back then feels instant and the scroll position is kept.
+       * The old snapshot is dropped rather than left frozen at full opacity,
+       * so it can't sit on top of the new page while the transition settles.
        */
+      html[data-astro-transition="back"]::view-transition-old(*) {
+        display: none;
+      }
       html[data-astro-transition="back"]::view-transition-group(*),
-      html[data-astro-transition="back"]::view-transition-old(*),
       html[data-astro-transition="back"]::view-transition-new(*) {
         animation: none !important;
       }
       @media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(*) {
+          display: none;
+        }
         ::view-transition-group(*),
-        ::view-transition-old(*),
         ::view-transition-new(*) {
           animation: none !important;
         }
@@ -101,7 +135,7 @@ const fadeUp = {
   <body class="font-sans text-text bg-paper">
     <Header transition:persist />
     <main
-      transition:animate={fadeUp}
+      transition:animate={transitions ? fadeUp : "none"}
       class:list={["max-w-2xl mx-auto px-6 pb-12", className]}
     >
       <slot />

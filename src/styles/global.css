@@ -8,6 +8,10 @@
 html {
     overflow-y: scroll;
     color-scheme: light;
+    /* The canvas base colour behind the page is white under `color-scheme:
+     * light`. Painting the root explicitly keeps it paper instead, so nothing
+     * white can show through while view-transition snapshots composite. */
+    background-color: var(--color-paper);
 }
 
 @theme {
